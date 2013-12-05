@@ -118,6 +118,32 @@ int Table::find(int *src, int *dest){
 #if defined(DISTANCEVECTOR)
 Table::Table() {
     topo.clear();
+    dv.clear();
+    all_dvs.clear();
+    routing.clear();
+    update = false;
+}
+
+bool Table::UpdateLink(int lat, int src, int dest){
+
+    if()
+
+    topo[src][dest].cost = lat;
+
+    dv[dest].cost = lat;
+
+}
+
+bool Table::Calculate(){
+
+
+
+}
+
+bool Table::UpdateMessage(int src, map <int, int> d){
+
+
+
 }
 
 ostream & Table::Print(ostream &os) const

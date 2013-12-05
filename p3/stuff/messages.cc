@@ -31,8 +31,6 @@ RoutingMessage::RoutingMessage(int new_age, int new_lat, int new_src, int new_de
 
 }
 
-RoutingMessage::RoutingMessage
-
 ostream &RoutingMessage::Print(ostream &os) const
 {
     os << "LinkState RoutingMessage()";
@@ -41,6 +39,14 @@ ostream &RoutingMessage::Print(ostream &os) const
 #endif
 
 #if defined(DISTANCEVECTOR)
+
+RoutingMessage::RoutingMessage(int new_src, map<int, int> new_vex){
+
+    src = new_src;
+    vex = new_vex;    
+
+}
+
 ostream &RoutingMessage::Print(ostream &os) const
 {
     os << "DistanceVector RoutingMessage()";

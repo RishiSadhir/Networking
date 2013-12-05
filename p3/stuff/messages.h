@@ -25,6 +25,12 @@ struct RoutingMessage {
 
     #endif
     #if defined(DISTANCEVECTOR)
+
+        int src;
+        map<int, int> vex;
+
+        RoutingMessage(int new_src, map<int, int> new_vex);
+
     #endif
 };
 

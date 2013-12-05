@@ -22,19 +22,24 @@ DistanceVector::~DistanceVector() {}
 void DistanceVector::LinkHasBeenUpdated(Link* l) {
     cerr << *this << ": Link Update: " << *l << endl;
 
-    // Change cost between you and your neighbor
-    // Ping all neighbors that you have this path
+    int lat = l->GetLatency();
+    int src = l->GetSrc();
+    int dest = l->GetDest();
 
-    SendToNeighbors(new RoutingMessage());
+    if(routing_table.UpdateLink(lat, src, dest)){
+        SendToNeighbors(new RoutingMessage(number, routing_table.routing));
+    }
 }
 
 void DistanceVector::ProcessIncomingRoutingMessage(RoutingMessage *m) {
     cerr << *this << " got a routing message: " << *m << " (ignored)" << endl;
 
     // Check path to destination node.
-    // If this path is shorter, replace.
+    // If this path is shorter than current one, replace.
+        // then ping all neighbors
     // If it's not shorter, leave it the same.
-    // If it's empty obviously add
+    // If it's empty obviously add.
+        // also ping neighbors
     // routing map?
 }
 

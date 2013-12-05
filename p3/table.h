@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -56,6 +57,14 @@ class Table {
         #endif
 
         #if defined(DISTANCEVECTOR)
+
+            map<int, TopoLink> dv;
+            map<int, int> routing;
+            bool update;
+            bool UpdateLink(int lat, int src, int dest);
+            bool UpdateMessage(int src, map<int, int> d);
+            bool Calculate();
+
         #endif
 };
 
