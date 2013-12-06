@@ -1,4 +1,5 @@
 #include "distancevector.h"
+#include "context.h"
 
 DistanceVector::DistanceVector(unsigned n, SimulationContext* c, double b, double l) :
     Node(n, c, b, l)
@@ -48,9 +49,13 @@ void DistanceVector::TimeOut() {
 
 Node* DistanceVector::GetNextHop(Node *destination) { 
 
-    // routing map?
+    int next_hop = routing_table.getRoute(destination->GetNumber());
+    Node *n = new Node(next_hop, NULL, 0, 0);
+    Node *ret = context->FindMatchingNode(const_cast<Node *> (n));
 
-    return NULL;
+    cerr << "HI " << next_hop << endl;
+
+    return ret;
 }
 
 Table* DistanceVector::GetRoutingTable() {

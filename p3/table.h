@@ -66,7 +66,8 @@ class Table {
 
             bool UpdateLink(int lat, int src, int dest);
             bool UpdateMessage(int me, int src, map<int, int> d);
-            bool Calculate();
+            bool Calculate(int src);
+            int getRoute(int dest);
 
         #endif
 };

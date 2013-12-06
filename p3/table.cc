@@ -130,36 +130,94 @@ bool Table::UpdateLink(int lat, int src, int dest){
     // Set yourself to 0. Sure do it every time?
   // Probably set by default.
     dv[src] = 0;
-    cost[src] = 0;
     dv_all[src][src] = 0;
     routing[src] = src;
 
 // Reset current cost of this neighbor with the new latency.
     cost[dest] = lat;
 
+    // If this neighbor hasn't been set
+    // Just update it in cost map as existing
+    // and put it in local vector.
+    if(dv[dest] == 0){
+      dv[dest] = lat;
+    }
+    
+    if(Calculate(src)){
+      return true;
+    }
+    
+
 // Check if the new cost to this destination is better 
     // than the current distance stored in our local vector
     // Do all this in calculate
     // If calculate updates our local distance vector
     // then send the message to everyoen that you have been updated.
-    if(Calculate()){
-      update = true;
-      return update;
-    }
 
     return false;
 
 }
 
-bool Table::Calculate(){
+bool Table::Calculate(int src){
+  update = false;
+
+  map <int, int>::const_iterator i;
+  map <int, int>::const_iterator ic;
+
+  for(i = dv.begin(); i != dv.end(); i++){
+    int dest = i->first;
+    //int curcost = i->second;
+
+    if(dest == src){
+      dv[dest] = 0;
+      continue;
+    }
+
+    int smallest = -1;
+    int right_key = -1;
+
+    for(ic = cost.begin(); ic != cost.end(); ic++){
+      int key = ic->first;
+      int neighbor_cost = ic->second;
+
+      int new_cost = neighbor_cost + dv_all[key][dest];
 
 
+      if(smallest == -1 || new_cost < smallest){
+        smallest = new_cost;
+        right_key = key;
+      }
+
+    } 
+
+    if(i->second != smallest){
+      dv[dest] = smallest;
+      update = true;
+      routing[dest] = right_key;
+    }
+
+  }
+
+  return update;
 
 }
 
 bool Table::UpdateMessage(int me, int src, map <int, int> d){
 
+  // Update the sender's dv with the new one
   dv_all[src] = d;
+
+  if(Calculate(src)){
+    return true;
+  }
+
+  return false;
+
+}
+
+int Table::getRoute(int dest){
+
+  return routing[dest];
 
 }
 
