@@ -58,11 +58,14 @@ class Table {
 
         #if defined(DISTANCEVECTOR)
 
-            map<int, TopoLink> dv;
+            map <int, map<int, int> > dv_all;
+            map<int, int> dv;
+            map<int, int> cost;
             map<int, int> routing;
             bool update;
+
             bool UpdateLink(int lat, int src, int dest);
-            bool UpdateMessage(int src, map<int, int> d);
+            bool UpdateMessage(int me, int src, map<int, int> d);
             bool Calculate();
 
         #endif

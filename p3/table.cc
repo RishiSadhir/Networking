@@ -119,18 +119,35 @@ int Table::find(int *src, int *dest){
 Table::Table() {
     topo.clear();
     dv.clear();
-    all_dvs.clear();
     routing.clear();
+    cost.clear();
+    dv_all.clear();
     update = false;
 }
 
 bool Table::UpdateLink(int lat, int src, int dest){
 
-    if()
+    // Set yourself to 0. Sure do it every time?
+  // Probably set by default.
+    dv[src] = 0;
+    cost[src] = 0;
+    dv_all[src][src] = 0;
+    routing[src] = src;
 
-    topo[src][dest].cost = lat;
+// Reset current cost of this neighbor with the new latency.
+    cost[dest] = lat;
 
-    dv[dest].cost = lat;
+// Check if the new cost to this destination is better 
+    // than the current distance stored in our local vector
+    // Do all this in calculate
+    // If calculate updates our local distance vector
+    // then send the message to everyoen that you have been updated.
+    if(Calculate()){
+      update = true;
+      return update;
+    }
+
+    return false;
 
 }
 
@@ -140,9 +157,9 @@ bool Table::Calculate(){
 
 }
 
-bool Table::UpdateMessage(int src, map <int, int> d){
+bool Table::UpdateMessage(int me, int src, map <int, int> d){
 
-
+  dv_all[src] = d;
 
 }
 

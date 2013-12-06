@@ -27,20 +27,19 @@ void DistanceVector::LinkHasBeenUpdated(Link* l) {
     int dest = l->GetDest();
 
     if(routing_table.UpdateLink(lat, src, dest)){
-        SendToNeighbors(new RoutingMessage(number, routing_table.routing));
+        SendToNeighbors(new RoutingMessage(number, routing_table.dv));
     }
 }
 
 void DistanceVector::ProcessIncomingRoutingMessage(RoutingMessage *m) {
     cerr << *this << " got a routing message: " << *m << " (ignored)" << endl;
 
-    // Check path to destination node.
-    // If this path is shorter than current one, replace.
-        // then ping all neighbors
-    // If it's not shorter, leave it the same.
-    // If it's empty obviously add.
-        // also ping neighbors
-    // routing map?
+    int src = m->src;
+    map<int, int> d = m->vex;
+
+    if(routing_table.UpdateMessage(number, src, d)){
+        SendToNeighbors(new RoutingMessage(number, routing_table.dv));
+    }
 }
 
 void DistanceVector::TimeOut() {
