@@ -53,7 +53,7 @@ Node* DistanceVector::GetNextHop(Node *destination) {
     Node *n = new Node(next_hop, NULL, 0, 0);
     Node *ret = context->FindMatchingNode(const_cast<Node *> (n));
 
-    cerr << "HI " << next_hop << endl;
+//    cerr << "HI " << next_hop << endl;
 
     return ret;
 }

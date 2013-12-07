@@ -40,7 +40,7 @@ ostream &RoutingMessage::Print(ostream &os) const
 
 #if defined(DISTANCEVECTOR)
 
-RoutingMessage::RoutingMessage(int new_src, map<int, int> new_vex){
+RoutingMessage::RoutingMessage(int new_src, map<int, TopoLink> new_vex){
 
     src = new_src;
     vex = new_vex;    

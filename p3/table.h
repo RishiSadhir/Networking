@@ -58,9 +58,9 @@ class Table {
 
         #if defined(DISTANCEVECTOR)
 
-            map <int, map<int, int> > dv_all;
-            map<int, int> dv;
-            map<int, int> cost;
+            map <int, map<int, TopoLink> > dv_all;
+            map<int, TopoLink> dv;
+            map<int, TopoLink> cost;
             map<int, int> routing;
             bool update;
 

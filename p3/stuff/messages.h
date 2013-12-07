@@ -27,9 +27,9 @@ struct RoutingMessage {
     #if defined(DISTANCEVECTOR)
 
         int src;
-        map<int, int> vex;
+        map<int, TopoLink> vex;
 
-        RoutingMessage(int new_src, map<int, int> new_vex);
+        RoutingMessage(int new_src, map<int, TopoLink> new_vex);
 
     #endif
 };

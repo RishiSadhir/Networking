@@ -131,7 +131,7 @@ bool Table::UpdateLink(int lat, int src, int dest){
   // Probably set by default.
     dv[src] = 0;
     dv_all[src][src] = 0;
-    routing[src] = src;
+    //routing[src] = src;
 
 // Reset current cost of this neighbor with the new latency.
     cost[dest] = lat;
@@ -139,8 +139,11 @@ bool Table::UpdateLink(int lat, int src, int dest){
     // If this neighbor hasn't been set
     // Just update it in cost map as existing
     // and put it in local vector.
-    if(dv[dest] == 0){
+    if(dv[dest] == 0){  
+      dv_all[src][dest] = lat;    
       dv[dest] = lat;
+      routing[dest] = dest;
+      return true;
     }
     
     if(Calculate(src)){
@@ -168,7 +171,10 @@ bool Table::Calculate(int src){
     int dest = i->first;
     //int curcost = i->second;
 
+    cerr << "Stuff " << i->first << " " << i->second << endl;
+
     if(dest == src){
+      //cerr << "My self" << endl;
       dv[dest] = 0;
       continue;
     }
@@ -180,8 +186,19 @@ bool Table::Calculate(int src){
       int key = ic->first;
       int neighbor_cost = ic->second;
 
-      int new_cost = neighbor_cost + dv_all[key][dest];
+      int new_cost;
 
+      //cerr << dv_all[key][dest] << endl;
+        if(dv_all[key][dest] == 0){
+            new_cost = neighbor_cost;
+        }
+        else{
+            new_cost = neighbor_cost + dv_all[key][dest];  
+        }
+        
+
+      //cerr << "New cost " << new_cost << endl;
+      //cerr << "Smallest " << smallest << endl;
 
       if(smallest == -1 || new_cost < smallest){
         smallest = new_cost;
@@ -190,7 +207,9 @@ bool Table::Calculate(int src){
 
     } 
 
+    cerr << i->second << " or " << smallest << endl;
     if(i->second != smallest){
+      cerr << "Updated" << endl;
       dv[dest] = smallest;
       update = true;
       routing[dest] = right_key;
@@ -204,8 +223,22 @@ bool Table::Calculate(int src){
 
 bool Table::UpdateMessage(int me, int src, map <int, int> d){
 
+  //cerr << "Hey bby" << endl;
+
   // Update the sender's dv with the new one
   dv_all[src] = d;
+
+  map <int, int>::const_iterator x;
+
+  //cerr << "Start ";
+  for(x = d.begin(); x != d.end(); x++){
+    if(dv[x->first] == -1){
+      
+    }
+    //cerr << x->first << x->second << " ";
+  }
+
+  //cerr << endl;
 
   if(Calculate(src)){
     return true;
